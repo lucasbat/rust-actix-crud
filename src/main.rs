@@ -4,7 +4,7 @@ use sqlx::{Pool, Postgres};
 mod databases {
     pub mod postgres_connection;
 }
-
+mod services;
 #[derive(Clone)]
 pub struct AppState {
     postgres_client: Pool<Postgres>,
@@ -27,5 +27,6 @@ async fn main()-> std::io::Result<()> {
                 })
             )
             .service(index)
+            .configure(services::users::services::users_routes)
     }).bind(("127.0.0.1", 8080))?.run().await
 }
